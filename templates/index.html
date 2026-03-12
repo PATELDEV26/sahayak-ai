@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SahayakAI - Government Scheme Eligibility Checker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <span>Sahayak</span>AI 🇮🇳
+        </div>
+        <div class="nav-links">
+            <button id="lang-toggle" class="nav-btn">हिन्दी</button>
+            {% if last_search %}
+            <div style="font-size: 0.9em; color: green; font-weight: bold;">
+                Latest: {{ last_search.name }} ({{ last_search.category }})
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1 data-en="SahayakAI – Government Scheme Eligibility Checker" data-hi="सहायकAI - सरकारी योजना पात्रता जांचकर्ता">
+            SahayakAI – Government Scheme Eligibility Checker
+        </h1>
+        <p data-en="Find government schemes you are eligible for in minutes. Dedicated to helping Students, Farmers, and Widowers." 
+           data-hi="कुछ ही मिनटों में उन सरकारी योजनाओं का पता लगाएं जिनके लिए आप पात्र हैं। छात्रों, किसानों और विधवाओं की मदद के लिए समर्पित।">
+            Find government schemes you are eligible for in minutes. Dedicated to helping Students, Farmers, and Widowers.
+        </p>
+    </header>
+
+    <main class="categories">
+        <!-- Student Card -->
+        <div class="card">
+            <div class="card-icon">🎓</div>
+            <h2 data-en="Student" data-hi="छात्र">Student</h2>
+            <p data-en="Scholarships and financial aid for education." data-hi="शिक्षा के लिए छात्रवृत्ति और वित्तीय सहायता।">
+                Scholarships and financial aid for education.
+            </p>
+            <a href="{{ url_for('student_form') }}" class="btn-primary" data-en="Check Eligibility" data-hi="पात्रता जांचें">Check Eligibility</a>
+        </div>
+
+        <!-- Farmer Card -->
+        <div class="card">
+            <div class="card-icon">🌾</div>
+            <h2 data-en="Farmer" data-hi="किसान">Farmer</h2>
+            <p data-en="Subsidies, loans, and agricultural support." data-hi="सब्सिडी, ऋण और कृषि सहायता।">
+                Subsidies, loans, and agricultural support.
+            </p>
+            <a href="{{ url_for('farmer_form') }}" class="btn-primary" data-en="Check Eligibility" data-hi="पात्रता जांचें">Check Eligibility</a>
+        </div>
+
+        <!-- Widower/Widow Card -->
+        <div class="card">
+            <div class="card-icon">🕊️</div>
+            <h2 data-en="Widow/Widower" data-hi="विधवा/विधुर">Widow/Widower</h2>
+            <p data-en="Pension, housing, and social security benefits." data-hi="पेंशन, आवास और सामाजिक सुरक्षा लाभ।">
+                Pension, housing, and social security benefits.
+            </p>
+            <a href="{{ url_for('widower_form') }}" class="btn-primary" data-en="Check Eligibility" data-hi="पात्रता जांचें">Check Eligibility</a>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

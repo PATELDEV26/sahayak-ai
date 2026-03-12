@@ -1,0 +1,23 @@
+scheme_name,category,min_age,max_age,max_income,min_land,caste,state,disability_required,bpl_required,description,benefit_amount,apply_link
+PM Scholarship Scheme,Student,18,25,250000,0,General,All,No,No,Scholarship for dependent wards of Ex-Servicemen / Ex-Coast Guard personnel.,₹30000/year,https://scholarships.gov.in
+National Merit Scholarship,Student,16,25,100000,0,General,All,No,No,Merit-based scholarship for university students.,₹10000/year,https://scholarships.gov.in
+Post-Matric Scholarship for SC/ST,Student,16,30,250000,0,SC,All,No,No,Financial assistance for SC/ST students studying at post-matriculation or post-secondary stage.,Variable,https://scholarships.gov.in
+Central Sector Scholarship,Student,18,25,800000,0,General,All,No,No,Scheme of Scholarship for College and University Students.,₹10000/year,https://scholarships.gov.in
+Pragati Scholarship,Student,18,25,800000,0,General,All,No,No,Scholarship for Girl Students pursuing Technical Education.,₹50000/year,https://aicte-india.org
+Disabled Student Scholarship,Student,0,100,250000,0,General,All,Yes,No,Pre-matric and Post-matric scholarship for students with disabilities.,Variable,https://disabilityaffairs.gov.in
+PM-KISAN,Farmer,18,100,0,0,General,All,No,No,Income support of Rs 6000 per year in three equal installments.,₹6000/year,https://pmkisan.gov.in
+Pradhan Mantri Fasal Bima Yojana,Farmer,18,100,0,0,General,All,No,No,Crop insurance scheme for farmers.,Insurance Cover,https://pmfby.gov.in
+Kisan Credit Card Scheme,Farmer,18,75,0,0,General,All,No,No,Adequate and timely credit support from the banking system.,Credit Limit,https://myscheme.gov.in
+Soil Health Card Scheme,Farmer,18,100,0,0,General,All,No,No,Cards detailing soil health and fertilizer recommendations.,Advisory,https://soilhealth.dac.gov.in
+PM Krishi Sinchai Yojana,Farmer,18,100,0,0,General,All,No,No,To expand cultivable area under assured irrigation.,Irrigation Support,https://pmksy.gov.in
+National Agriculture Market (eNAM),Farmer,18,100,0,0,General,All,No,No,Pan-India electronic trading portal for farm produce.,Market Access,https://enam.gov.in
+Widow Pension Scheme,Widower,40,100,200000,0,General,All,No,Yes,Monthly pension for destitute widows.,₹1000/month,https://nsap.nic.in
+Indira Gandhi National Widow Pension,Widower,40,79,0,0,General,All,No,Yes,Pension for BPL widows aged 40-79 years.,₹300/month,https://nsap.nic.in
+PM Awas Yojana (Rural),Widower,18,100,0,0,General,All,No,No,Financial assistance for construction of pucca house.,₹120000,https://pmayg.nic.in
+Annapurna Food Scheme,Widower,65,100,0,0,General,All,No,No,10 kg of food grains per month free of cost to destitute senior citizens.,Food Grains,https://pdsportal.nic.in
+Rashtriya Parivar Sahayata Yojana,Widower,18,60,0,0,General,All,No,Yes,Lump sum assistance to households below poverty line on death of primary breadwinner.,₹20000,https://nsap.nic.in
+National Social Assistance Programme,Widower,60,100,0,0,General,All,No,Yes,Social security and assistance to poor households.,Variable,https://nsap.nic.in
+OBC Pre-Matric Scholarship,Student,6,15,250000,0,OBC,All,No,No,Scholarship for OBC students in schools.,Variable,https://scholarships.gov.in
+PM-SYM (Shram Yogi Maandhan),Farmer,18,40,15000,0,General,All,No,No,Voluntary pension scheme for unorganized workers including farmers.,₹3000/month,https://maandhan.in
+Mahila Kisan Sashaktikaran Pariyojana,Farmer,18,100,0,0,General,All,No,No,Empowering women in agriculture.,Training/Support,https://aajeevika.gov.in
+Atal Pension Yojana,Widower,18,40,0,0,General,All,No,No,Pension scheme for unorganized sector citizens.,₹1000-5000/month,https://npscra.nsdl.co.in

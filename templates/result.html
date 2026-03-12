@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eligibility Results - SahayakAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo"><a href="{{ url_for('index') }}"><span>Sahayak</span>AI</a></div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}" class="nav-btn">Home</a>
+        </div>
+    </nav>
+
+    <div class="form-container" style="max-width: 1000px;">
+        <div class="result-header">
+            <h2>Hello, {{ user_name }}</h2>
+            <p>Here is your eligibility report for <strong>{{ category }}</strong> schemes.</p>
+            {% if saved_count > 0 %}
+            <p style="color: green; font-size: 0.9em;">✅ {{ saved_count }} documents uploaded successfully.</p>
+            {% endif %}
+        </div>
+
+        {% if schemes %}
+        <div class="eligibility-summary">
+            <h3>🎉 You are eligible for {{ schemes|length }} schemes!</h3>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill" data-percentage="{{ (schemes|length / 20) * 100 }}"></div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <input type="text" id="scheme-search" placeholder="Search schemes..." class="form-control">
+        </div>
+
+        <div class="schemes-grid">
+            {% for scheme in schemes %}
+            <div class="scheme-card">
+                <h3>{{ scheme.scheme_name }}</h3>
+                <p>{{ scheme.description }}</p>
+                <div class="benefit-amount">{{ scheme.benefit_amount }}</div>
+                <div style="margin-top: auto; display: flex; gap: 10px;">
+                    <a href="javascript:void(0);" onclick="return false;" class="btn-primary"
+                        style="font-size: 0.9rem; padding: 0.5rem 1rem;">Apply Now</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="margin-top: 3rem; text-align: center;">
+            <form action="{{ url_for('download_report') }}" method="POST">
+                <input type="hidden" name="user_name" value="{{ user_name }}">
+                <input type="hidden" name="category" value="{{ category }}">
+                {% for scheme in schemes %}
+                <input type="hidden" name="scheme_name" value="{{ scheme.scheme_name }}">
+                {% endfor %}
+                <button type="submit" class="btn-secondary">⬇ Download Eligibility Report (PDF)</button>
+            </form>
+        </div>
+
+        {% else %}
+        <div class="eligibility-summary not-eligible">
+            <h3>⚠️ No matching schemes found.</h3>
+            <p>Based on the details provided, we couldn't find specific schemes at this moment.</p>
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <p>Suggestion: Check if your income or age details are entered correctly.</p>
+            <a href="{{ url_for('index') }}" class="btn-primary">Check Another Category</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

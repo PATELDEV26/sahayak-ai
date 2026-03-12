@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Eligibility - SahayakAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><a href="{{ url_for('index') }}"><span>Sahayak</span>AI</a></div>
+    </nav>
+
+    <div class="form-container">
+        <h2>Student Eligibility Form</h2>
+        <form action="{{ url_for('check_eligibility', category='student') }}" method="POST" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="full_name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label>Age</label>
+                <input type="number" name="age" class="form-control" required min="5" max="100">
+            </div>
+
+            <div class="form-group">
+                <label>State</label>
+                <select name="state" class="form-control" required>
+                    <option value="" disabled selected>Select State</option>
+                    <option value="All">All India</option>
+                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chandigarh">Chandigarh</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Ladakh">Ladakh</option>
+                    <option value="Lakshadweep">Lakshadweep</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Puducherry">Puducherry</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Annual Family Income (₹)</label>
+                <input type="number" name="income" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label>Caste Category</label>
+                <select name="caste" class="form-control">
+                    <option value="General">General</option>
+                    <option value="OBC">OBC</option>
+                    <option value="SC">SC</option>
+                    <option value="ST">ST</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Person with Disability?</label>
+                <select name="disability" class="form-control">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Current Education Enrolled?</label>
+                <select name="enrolled" class="form-control">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <h3>Documents (Max 5MB each)</h3>
+            <div class="form-group file-input">
+                <label>Aadhaar Card (Required)</label>
+                <input type="file" name="documents" id="doc-aadhaar" required>
+            </div>
+            
+            <div class="form-group file-input">
+                <label>Income Certificate (Required)</label>
+                <input type="file" name="documents" id="doc-income" required>
+            </div>
+
+            <div class="form-group file-input">
+                <label>Marksheet (Optional)</label>
+                <input type="file" name="documents" id="doc-marksheet">
+            </div>
+
+            <button type="submit" class="btn-primary">Find Schemes</button>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
