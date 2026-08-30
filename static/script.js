@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="ai-loading-card">
                 <div class="ai-spinner"></div>
                 <p style="font-weight:700;font-size:16px;margin:0">Reading your document...</p>
-                <p style="color:#777;font-size:13px;margin:6px 0 0">Tesseract OCR is scanning </p>
+                <p style="color:#777;font-size:13px;margin:6px 0 0">Gemini Vision AI is scanning </p>
             </div>`;
         document.body.appendChild(div);
     }

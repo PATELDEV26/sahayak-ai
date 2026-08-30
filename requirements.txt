@@ -3,11 +3,5 @@ pandas
 reportlab
 werkzeug
 python-dotenv
-pytesseract
 Pillow
-opencv-python
-numpy
-googletrans==4.0.0rc1
-langdetect
-python-dotenv
 google-generativeai
