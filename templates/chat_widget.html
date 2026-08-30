@@ -1,0 +1,403 @@
+<style>
+    /* Chat Widget Styles */
+    .sahayak-chat-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #16a34a;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s;
+    }
+    .sahayak-chat-btn:hover {
+        transform: scale(1.05);
+    }
+
+    .sahayak-chat-panel {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 350px;
+        max-width: calc(100vw - 40px);
+        height: 500px;
+        max-height: calc(100vh - 120px);
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        display: none;
+        flex-direction: column;
+        z-index: 1000;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+
+    .sahayak-chat-header {
+        background-color: #16a34a;
+        color: white;
+        padding: 15px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .sahayak-chat-header button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .sahayak-chat-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: #f9fafb;
+    }
+
+    .sahayak-msg {
+        max-width: 80%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 15px;
+        line-height: 1.4;
+    }
+
+    .sahayak-msg.user {
+        background-color: #dcf8c6;
+        align-self: flex-end;
+        border-bottom-right-radius: 0;
+    }
+
+    .sahayak-msg.bot {
+        background-color: white;
+        border: 1px solid #e5e7eb;
+        align-self: flex-start;
+        border-bottom-left-radius: 0;
+    }
+
+    .sahayak-chat-input {
+        padding: 10px;
+        background: white;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .sahayak-chat-input input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 20px;
+        outline: none;
+    }
+    
+    .sahayak-chat-input input:focus {
+        border-color: #16a34a;
+    }
+
+    .sahayak-send-btn {
+        background-color: #16a34a;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sahayak-mic-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .sahayak-mic-btn {
+        background-color: #dc2626;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .sahayak-mic-btn.pulsing {
+        animation: pulse 1s infinite;
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+    }
+
+    .sahayak-mic-label {
+        font-size: 10px;
+        color: #dc2626;
+        font-weight: bold;
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+
+    .typing-indicator {
+        display: none;
+        padding: 10px;
+        background: white;
+        border-radius: 8px;
+        align-self: flex-start;
+        border: 1px solid #e5e7eb;
+        color: #6b7280;
+        font-style: italic;
+        font-size: 14px;
+    }
+
+    .stop-speaking-btn {
+        display: none;
+        background: #fca5a5;
+        color: #991b1b;
+        border: 1px solid #f87171;
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-size: 12px;
+        cursor: pointer;
+        margin-top: 5px;
+        align-self: center;
+    }
+</style>
+
+<!-- Widget Button -->
+<button class="sahayak-chat-btn" id="sahayakChatBtn" onclick="toggleChat()">
+    💬
+</button>
+
+<!-- Chat Panel -->
+<div class="sahayak-chat-panel" id="sahayakChatPanel">
+    <div class="sahayak-chat-header">
+        <div>SahayakAI Assistant</div>
+        <button onclick="toggleChat()">✖</button>
+    </div>
+    
+    <button class="stop-speaking-btn" id="stopSpeakingBtn" onclick="stopSpeaking()">🔇 बोलना बंद करें (Stop Speaking)</button>
+    
+    <div class="sahayak-chat-messages" id="sahayakChatMessages">
+        <div class="sahayak-msg bot">नमस्ते! मैं SahayakAI हूँ। आप मुझसे सरकारी योजनाओं के बारे में कोई भी सवाल पूछ सकते हैं।</div>
+    </div>
+    
+    <div class="typing-indicator" id="typingIndicator">...</div>
+    
+    <div class="sahayak-chat-input">
+        <div class="sahayak-mic-wrapper">
+            <button class="sahayak-mic-btn" id="micBtn" onclick="toggleMic()">
+                🎤
+            </button>
+            <span class="sahayak-mic-label">बोलें</span>
+        </div>
+        <input type="text" id="chatInput" placeholder="अपना सवाल पूछें..." onkeypress="handleKeyPress(event)">
+        <button class="sahayak-send-btn" onclick="sendMessage()">➤</button>
+    </div>
+</div>
+
+<script>
+    let isChatOpen = false;
+    let chatHistory = [];
+    let isListening = false;
+    
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition;
+
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'hi-IN';
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = function() {
+            isListening = true;
+            document.getElementById('micBtn').classList.add('pulsing');
+        };
+
+        recognition.onresult = function(event) {
+            let fullText = '';
+            for (let i = 0; i < event.results.length; ++i) {
+                fullText += event.results[i][0].transcript;
+            }
+            document.getElementById('chatInput').value = fullText;
+        };
+
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error', event.error);
+            stopMic();
+        };
+
+        recognition.onend = function() {
+            stopMic();
+            if (document.getElementById('chatInput').value.trim() !== "") {
+                sendMessage();
+            }
+        };
+    }
+
+    function toggleChat() {
+        isChatOpen = !isChatOpen;
+        document.getElementById('sahayakChatPanel').style.display = isChatOpen ? 'flex' : 'none';
+        if(isChatOpen) {
+            document.getElementById('chatInput').focus();
+        } else {
+            stopSpeaking();
+        }
+    }
+
+    function toggleMic() {
+        if (!SpeechRecognition) {
+            addMessage('आपका ब्राउज़र वॉइस सपोर्ट नहीं करता। कृपया Chrome उपयोग करें।', 'bot');
+            return;
+        }
+
+        if (isListening) {
+            recognition.stop();
+        } else {
+            stopSpeaking();
+            recognition.start();
+        }
+    }
+
+    function stopMic() {
+        isListening = false;
+        document.getElementById('micBtn').classList.remove('pulsing');
+    }
+
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    function addMessage(text, role) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `sahayak-msg ${role}`;
+        msgDiv.textContent = text;
+        
+        const messagesContainer = document.getElementById('sahayakChatMessages');
+        messagesContainer.appendChild(msgDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text) return;
+
+        // Add user msg to UI
+        addMessage(text, 'user');
+        input.value = '';
+        
+        stopSpeaking(); // stop any ongoing speech
+
+        // Add to history
+        chatHistory.push({role: 'user', content: text});
+        
+        // Show typing indicator
+        const typingIndicator = document.getElementById('typingIndicator');
+        typingIndicator.style.display = 'block';
+        
+        // Scroll to bottom
+        const messagesContainer = document.getElementById('sahayakChatMessages');
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: text,
+                    history: chatHistory.slice(-10) // keep last 10 for payload
+                })
+            });
+
+            const data = await response.json();
+            
+            typingIndicator.style.display = 'none';
+
+            if (data.reply) {
+                addMessage(data.reply, 'bot');
+                chatHistory.push({role: 'model', content: data.reply});
+                speakText(data.reply);
+            }
+        } catch (err) {
+            typingIndicator.style.display = 'none';
+            console.error('Chat error:', err);
+            addMessage('क्षमा करें, अभी सेवा उपलब्ध नहीं है। कृपया थोड़ी देर बाद प्रयास करें।', 'bot');
+        }
+    }
+
+    function speakText(text) {
+        if ('speechSynthesis' in window) {
+            stopSpeaking(); // Cancel current speech
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'hi-IN';
+            
+            const voices = window.speechSynthesis.getVoices();
+            const hindiVoice = voices.find(v => v.lang === 'hi-IN') || voices.find(v => v.lang.startsWith('hi'));
+            if (hindiVoice) {
+                utterance.voice = hindiVoice;
+            }
+            utterance.rate = 0.9;
+            
+            utterance.onstart = function() {
+                document.getElementById('stopSpeakingBtn').style.display = 'block';
+            };
+            
+            utterance.onend = function() {
+                document.getElementById('stopSpeakingBtn').style.display = 'none';
+            };
+            
+            utterance.onerror = function() {
+                document.getElementById('stopSpeakingBtn').style.display = 'none';
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    function stopSpeaking() {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            document.getElementById('stopSpeakingBtn').style.display = 'none';
+        }
+    }
+
+    // Attempt to preload voices
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = function() {
+            window.speechSynthesis.getVoices();
+        };
+    }
+</script>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Girls Eligibility - SahayakAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><a href="{{ url_for('index') }}"><span>Sahayak</span>AI</a></div>
+        <div class="nav-links">
+            <button id="lang-toggle" class="nav-btn">हिन्दी</button>
+            <a href="{{ url_for('index') }}" class="nav-btn" data-en="Home" data-hi="होम">Home</a>
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <h2 data-en="Girl Child Eligibility Form" data-hi="बालिका पात्रता फॉर्म">Girl Child Eligibility Form</h2>
+        <form action="{{ url_for('check_eligibility', category='girl') }}" method="POST" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label data-en="Full Name" data-hi="पूरा नाम">Full Name</label>
+                <input type="text" id="full_name" name="full_name" class="form-control" pattern="[A-Za-z\s\.]+" title="Please enter in English only" required>
+            </div>
+
+            <div class="form-group">
+                <label data-en="Age" data-hi="आयु">Age</label>
+                <input type="number" id="age" name="age" class="form-control" required min="0" max="21">
+            </div>
+
+            <div class="form-group">
+                <label data-en="State" data-hi="राज्य">State</label>
+                <select name="state" id="state" class="form-control" required>
+                    <option value="" disabled selected>Select State</option>
+                    <option value="All">All India</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label data-en="Annual Family Income (₹)" data-hi="वार्षिक पारिवारिक आय (₹)">Annual Family Income (₹)</label>
+                <input type="number" name="income" id="income" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label data-en="School/Education Level" data-hi="शिक्षा का स्तर">School/Education Level</label>
+                <select name="education_level" class="form-control" required>
+                    <option value="Not in school" data-en="Not in school" data-hi="स्कूल में नहीं">Not in school</option>
+                    <option value="Primary (Class 1–5)" data-en="Primary (Class 1–5)" data-hi="प्राथमिक (कक्षा 1-5)">Primary (Class 1–5)</option>
+                    <option value="Middle (Class 6–8)" data-en="Middle (Class 6–8)" data-hi="माध्यमिक (कक्षा 6-8)">Middle (Class 6–8)</option>
+                    <option value="Secondary (Class 9–10)" data-en="Secondary (Class 9–10)" data-hi="सेकेंडरी (कक्षा 9-10)">Secondary (Class 9–10)</option>
+                    <option value="Higher Secondary (Class 11–12)" data-en="Higher Secondary (Class 11–12)" data-hi="हायर सेकेंडरी (कक्षा 11-12)">Higher Secondary (Class 11–12)</option>
+                    <option value="Undergraduate" data-en="Undergraduate" data-hi="स्नातक (Undergraduate)">Undergraduate</option>
+                    <option value="Postgraduate" data-en="Postgraduate" data-hi="स्नातकोत्तर (Postgraduate)">Postgraduate</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label data-en="Caste Category" data-hi="जाति श्रेणी">Caste Category</label>
+                <select name="caste" class="form-control" required>
+                    <option value="General" data-en="General" data-hi="सामान्य">General</option>
+                    <option value="OBC" data-en="OBC" data-hi="ओबीसी">OBC</option>
+                    <option value="SC" data-en="SC" data-hi="अनुसूचित जाति (SC)">SC</option>
+                    <option value="ST" data-en="ST" data-hi="अनुसूचित जनजाति (ST)">ST</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label data-en="Disability Status" data-hi="विकलांगता की स्थिति">Disability Status</label>
+                <select name="disability" class="form-control" required>
+                    <option value="No" data-en="No" data-hi="नहीं">No</option>
+                    <option value="Yes" data-en="Yes" data-hi="हाँ">Yes</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label data-en="BPL Card Holder?" data-hi="क्या आप बीपीएल कार्ड धारक हैं?">BPL Card Holder?</label>
+                <select name="bpl" class="form-control" required>
+                    <option value="No" data-en="No" data-hi="नहीं">No</option>
+                    <option value="Yes" data-en="Yes" data-hi="हाँ">Yes</option>
+                </select>
+            </div>
+
+            <h3 data-en="Documents (Optional)" data-hi="दस्तावेज़ (वैकल्पिक)">Documents (Optional)</h3>
+
+            <!-- AADHAAR UPLOAD WIDGET -->
+            <div class="upload-widget" id="widget-aadhaar">
+                <p class="upload-label"><span data-en="📄 Aadhaar Card" data-hi="📄 आधार कार्ड">📄 Aadhaar Card</span></p>
+                <div class="upload-options">
+                    <label class="upload-btn" for="doc-aadhaar-input" data-en="📁 Choose File" data-hi="📁 फ़ाइल चुनें">📁 Choose File</label>
+                    <input type="file" id="doc-aadhaar-input" name="documents" accept="image/*,.pdf" style="display:none">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" data-en="Find Schemes" data-hi="योजनाएँ खोजें">Find Schemes</button>
+        </form>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

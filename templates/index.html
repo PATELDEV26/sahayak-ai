@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">      
     <title>SahayakAI - Government Scheme Eligibility Checker</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -10,12 +10,13 @@
     <nav class="navbar">
         <div class="logo">
             <span>Sahayak</span>AI 🇮🇳
+            <span class="badge" style="font-size: 0.4em; padding: 2px 5px; background: #eee; border-radius: 4px; margin-left: 10px; color: #333;">Powered by Tesseract OCR • Offline</span>
         </div>
         <div class="nav-links">
-            <button id="lang-toggle" class="nav-btn">हिन्दी</button>
+            <button id="lang-toggle" class="nav-btn">हिन्दी</button> 
             {% if last_search %}
-            <div style="font-size: 0.9em; color: green; font-weight: bold;">
-                Latest: {{ last_search.name }} ({{ last_search.category }})
+            <div style="font-size: 0.9em; color: green; font-weight: bold;">    
+                Latest: {{ last_search.name }} ({{ last_search.category }})     
             </div>
             {% endif %}
         </div>
@@ -25,7 +26,7 @@
         <h1 data-en="SahayakAI – Government Scheme Eligibility Checker" data-hi="सहायकAI - सरकारी योजना पात्रता जांचकर्ता">
             SahayakAI – Government Scheme Eligibility Checker
         </h1>
-        <p data-en="Find government schemes you are eligible for in minutes. Dedicated to helping Students, Farmers, and Widowers." 
+        <p data-en="Find government schemes you are eligible for in minutes. Dedicated to helping Students, Farmers, and Widowers."
            data-hi="कुछ ही मिनटों में उन सरकारी योजनाओं का पता लगाएं जिनके लिए आप पात्र हैं। छात्रों, किसानों और विधवाओं की मदद के लिए समर्पित।">
             Find government schemes you are eligible for in minutes. Dedicated to helping Students, Farmers, and Widowers.
         </p>
@@ -52,17 +53,28 @@
             <a href="{{ url_for('farmer_form') }}" class="btn-primary" data-en="Check Eligibility" data-hi="पात्रता जांचें">Check Eligibility</a>
         </div>
 
-        <!-- Widower/Widow Card -->
+        <!-- Girls Card -->
+        <div class="card">
+            <div class="card-icon">👧</div>
+            <h2 data-en="Girl Child" data-hi="बालिका">Girl Child</h2>
+            <p data-en="Scholarships, empowerment, and special schemes for girls." data-hi="लड़कियों के लिए छात्रवृत्ति, सशक्तिकरण और विशेष योजनाएं।">
+                Scholarships, empowerment, and special schemes for girls.
+            </p>
+            <a href="{{ url_for('girls_form') }}" class="btn-primary" data-en="Check Eligibility" data-hi="पात्रता जांचें">Check Eligibility</a>
+        </div>
+
+        <!-- Others Card -->
         <div class="card">
             <div class="card-icon">🕊️</div>
-            <h2 data-en="Widow/Widower" data-hi="विधवा/विधुर">Widow/Widower</h2>
-            <p data-en="Pension, housing, and social security benefits." data-hi="पेंशन, आवास और सामाजिक सुरक्षा लाभ।">
-                Pension, housing, and social security benefits.
+            <h2 data-en="Others" data-hi="अन्य">Others</h2>
+            <p data-en="Schemes for widows, senior citizens, children, and more." data-hi="विधवाओं, वरिष्ठ नागरिकों, बच्चों और अन्य के लिए योजनाएं।">
+                Schemes for widows, senior citizens, children, and more.
             </p>
-            <a href="{{ url_for('widower_form') }}" class="btn-primary" data-en="Check Eligibility" data-hi="पात्रता जांचें">Check Eligibility</a>
+            <a href="{{ url_for('others_form') }}" class="btn-primary" data-en="Check Eligibility" data-hi="पात्रता जांचें">Check Eligibility</a>
         </div>
     </main>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>       
+    {% include 'chat_widget.html' %}
 </body>
 </html>

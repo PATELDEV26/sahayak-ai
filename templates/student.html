@@ -9,25 +9,29 @@
 <body>
     <nav class="navbar">
         <div class="logo"><a href="{{ url_for('index') }}"><span>Sahayak</span>AI</a></div>
+        <div class="nav-links">
+            <button id="lang-toggle" class="nav-btn">हिन्दी</button>
+            <a href="{{ url_for('index') }}" class="nav-btn" data-en="Home" data-hi="होम">Home</a>
+        </div>
     </nav>
 
     <div class="form-container">
-        <h2>Student Eligibility Form</h2>
+        <h2 data-en="Student Eligibility Form" data-hi="छात्र पात्रता फॉर्म">Student Eligibility Form</h2>
         <form action="{{ url_for('check_eligibility', category='student') }}" method="POST" enctype="multipart/form-data">
-            
+
             <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" name="full_name" class="form-control" required>
+                <label data-en="Full Name" data-hi="पूरा नाम">Full Name</label>
+                <input type="text" id="full_name" name="full_name" class="form-control" pattern="[A-Za-z\s\.]+" title="Please enter in English only" required>
             </div>
 
             <div class="form-group">
-                <label>Age</label>
-                <input type="number" name="age" class="form-control" required min="5" max="100">
+                <label data-en="Age" data-hi="आयु">Age</label>
+                <input type="number" id="age" name="age" class="form-control" required min="5" max="100">
             </div>
 
             <div class="form-group">
-                <label>State</label>
-                <select name="state" class="form-control" required>
+                <label data-en="State" data-hi="राज्य">State</label>
+                <select name="state" id="state" class="form-control" required>
                     <option value="" disabled selected>Select State</option>
                     <option value="All">All India</option>
                     <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
@@ -70,53 +74,91 @@
             </div>
 
             <div class="form-group">
-                <label>Annual Family Income (₹)</label>
-                <input type="number" name="income" class="form-control" required>
+                <label data-en="Annual Family Income (₹)" data-hi="वार्षिक पारिवारिक आय (₹)">Annual Family Income (₹)</label>
+                <input type="number" name="income" id="income" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label>Caste Category</label>
+                <label data-en="Caste Category" data-hi="जाति श्रेणी">Caste Category</label>
                 <select name="caste" class="form-control">
-                    <option value="General">General</option>
-                    <option value="OBC">OBC</option>
-                    <option value="SC">SC</option>
-                    <option value="ST">ST</option>
+                    <option value="General" data-en="General" data-hi="सामान्य">General</option>
+                    <option value="OBC" data-en="OBC" data-hi="ओबीसी">OBC</option>
+                    <option value="SC" data-en="SC" data-hi="अनुसूचित जाति (SC)">SC</option>
+                    <option value="ST" data-en="ST" data-hi="अनुसूचित जनजाति (ST)">ST</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>Person with Disability?</label>
+                <label data-en="Person with Disability?" data-hi="क्या आप विकलांग हैं?">Person with Disability?</label>
                 <select name="disability" class="form-control">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
+                    <option value="No" data-en="No" data-hi="नहीं">No</option>
+                    <option value="Yes" data-en="Yes" data-hi="हाँ">Yes</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>Current Education Enrolled?</label>
+                <label data-en="Currently Enrolled in Education?" data-hi="क्या आप वर्तमान में शिक्षा प्राप्त कर रहे हैं?">Currently Enrolled in Education?</label>
                 <select name="enrolled" class="form-control">
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
+                    <option value="Yes" data-en="Yes" data-hi="हाँ">Yes</option>
+                    <option value="No" data-en="No" data-hi="नहीं">No</option>
                 </select>
             </div>
 
-            <h3>Documents (Max 5MB each)</h3>
-            <div class="form-group file-input">
-                <label>Aadhaar Card (Required)</label>
-                <input type="file" name="documents" id="doc-aadhaar" required>
-            </div>
-            
-            <div class="form-group file-input">
-                <label>Income Certificate (Required)</label>
-                <input type="file" name="documents" id="doc-income" required>
+            <h3 data-en="Documents — AI Auto-Fill" data-hi="दस्तावेज़ — AI ऑटो-फ़िल">Documents — AI Auto-Fill</h3>
+
+            <!-- AADHAAR UPLOAD WIDGET -->
+            <div class="upload-widget" id="widget-aadhaar">
+                <p class="upload-label"><span data-en="📄 Aadhaar Card" data-hi="📄 आधार कार्ड">📄 Aadhaar Card</span> <span style="color:#c62828;font-size:12px" data-en="(Required)" data-hi="(आवश्यक)">(Required)</span></p>
+                <p class="upload-hint" data-en="AI will auto-fill your name, age & state" data-hi="AI आपका नाम, आयु और राज्य स्वत: भर देगा">AI will auto-fill your name, age &amp; state</p>
+                <div class="upload-options">
+                    <label class="upload-btn" for="doc-aadhaar-input" data-en="📁 Choose File" data-hi="📁 फ़ाइल चुनें">📁 Choose File</label>
+                    <input type="file" id="doc-aadhaar-input" name="documents"
+                           accept="image/*,.pdf" style="display:none">
+                    <button type="button" class="upload-btn camera-btn open-camera-btn" data-en="📷 Take Photo" data-hi="📷 फोटो लें">📷 Take Photo</button>
+                </div>
+                <div class="camera-container" style="display:none">
+                    <video class="camera-feed" autoplay playsinline></video>
+                    <div class="camera-actions">
+                        <button type="button" class="upload-btn capture-btn" data-en="📸 Capture" data-hi="📸 खींचें">📸 Capture</button>
+                        <button type="button" class="upload-btn close-camera-btn"
+                                style="background:#9e9e9e" data-en="✕ Close" data-hi="✕ बंद करें">✕ Close</button>
+                    </div>
+                    <canvas class="capture-canvas" style="display:none"></canvas>
+                </div>
+                <img class="doc-preview-img" alt="Aadhaar preview" style="display:none;">
+                <p class="doc-preview-name"></p>
+                <div id="banner-aadhaar"></div>
             </div>
 
-            <div class="form-group file-input">
-                <label>Marksheet (Optional)</label>
-                <input type="file" name="documents" id="doc-marksheet">
+            <!-- INCOME CERTIFICATE UPLOAD WIDGET -->
+            <div class="upload-widget" id="widget-income">
+                <p class="upload-label"><span data-en="📋 Income Certificate" data-hi="📋 आय प्रमाण पत्र">📋 Income Certificate</span> <span style="color:#c62828;font-size:12px" data-en="(Required)" data-hi="(आवश्यक)">(Required)</span></p>
+                <p class="upload-hint" data-en="AI will auto-fill your annual income" data-hi="AI आपकी वार्षिक आय स्वत: भर देगा">AI will auto-fill your annual income</p>
+                <div class="upload-options">
+                    <label class="upload-btn" for="doc-income-input" data-en="📁 Choose File" data-hi="📁 फ़ाइल चुनें">📁 Choose File</label>
+                    <input type="file" id="doc-income-input" name="documents"
+                           accept="image/*,.pdf" style="display:none">
+                </div>
+                <img class="doc-preview-img" alt="Income certificate preview" style="display:none;">
+                <p class="doc-preview-name"></p>
+                <div id="banner-income"></div>
             </div>
 
-            <button type="submit" class="btn-primary">Find Schemes</button>
+            <!-- MARKSHEET UPLOAD WIDGET -->
+            <div class="upload-widget" id="widget-marksheet">
+                <p class="upload-label"><span data-en="📝 Marksheet" data-hi="📝 मार्कशीट">📝 Marksheet</span> <span style="color:#777;font-size:12px" data-en="(Optional)" data-hi="(वैकल्पिक)">(Optional)</span></p>
+                <p class="upload-hint" data-en="Upload your latest marksheet" data-hi="अपनी नवीनतम मार्कशीट अपलोड करें">Upload your latest marksheet</p>
+                <div class="upload-options">
+                    <label class="upload-btn" for="doc-marksheet-input" data-en="📁 Choose File" data-hi="📁 फ़ाइल चुनें">📁 Choose File</label>
+                    <input type="file" id="doc-marksheet-input" name="documents"
+                           accept="image/*,.pdf" style="display:none">
+                </div>
+                <img class="doc-preview-img" alt="Marksheet preview" style="display:none;">
+                <p class="doc-preview-name"></p>
+                <div id="banner-marksheet"></div>
+            </div>
+
+            <button type="submit" class="btn-primary" data-en="Find Schemes" data-hi="योजनाएँ खोजें">Find Schemes</button>
         </form>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>

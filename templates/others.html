@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Others Eligibility - SahayakAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><a href="{{ url_for('index') }}"><span>Sahayak</span>AI</a></div>
+        <div class="nav-links">
+            <button id="lang-toggle" class="nav-btn">हिन्दी</button>
+            <a href="{{ url_for('index') }}" class="nav-btn" data-en="Home" data-hi="होम">Home</a>
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <h2 data-en="Others Eligibility Form" data-hi="अन्य पात्रता फॉर्म">Others Eligibility Form</h2>
+        <form action="{{ url_for('check_eligibility', category='others') }}" method="POST" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label data-en="Full Name" data-hi="पूरा नाम">Full Name</label>
+                <input type="text" id="full_name" name="full_name" class="form-control" pattern="[A-Za-z\s\.]+" title="Please enter in English only" required>
+            </div>
+
+            <div class="form-group">
+                <label data-en="Age" data-hi="आयु">Age</label>
+                <input type="number" id="age" name="age" class="form-control" required min="0" max="120">
+            </div>
+
+            <div class="form-group">
+                <label data-en="State" data-hi="राज्य">State</label>
+                <select name="state" id="state" class="form-control" required>
+                    <option value="" disabled selected>Select State</option>
+                    <option value="All">All India</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label data-en="Annual Income (₹)" data-hi="वार्षिक आय (₹)">Annual Income (₹)</label>
+                <input type="number" name="income" id="income" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label data-en="Gender" data-hi="लिंग">Gender</label>
+                <select name="gender" class="form-control" required>
+                    <option value="Male" data-en="Male" data-hi="पुरुष">Male</option>
+                    <option value="Female" data-en="Female" data-hi="महिला">Female</option>
+                    <option value="Other" data-en="Other" data-hi="अन्य">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label data-en="Sub-Category" data-hi="उप-श्रेणी">Sub-Category</label>
+                <select name="sub_category" id="sub_category" class="form-control" onchange="toggleDisabilityField()" required>
+                    <option value="Widow" data-en="Widow / Widower" data-hi="विधवा / विधुर">Widow / Widower</option>
+                    <option value="Senior Citizen" data-en="Senior Citizen (60+)" data-hi="वरिष्ठ नागरिक (60+)">Senior Citizen (60+)</option>
+                    <option value="Child" data-en="Child (under 18)" data-hi="बच्चा (18 से कम)">Child (under 18)</option>
+                    <option value="Person with Disability" data-en="Person with Disability" data-hi="विकलांग व्यक्ति">Person with Disability</option>
+                    <option value="Minority Community Member" data-en="Minority Community Member" data-hi="अल्पसंख्यक समुदाय का सदस्य">Minority Community Member</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label data-en="BPL Card Holder?" data-hi="क्या आप बीपीएल कार्ड धारक हैं?">BPL Card Holder?</label>
+                <select name="bpl" class="form-control">
+                    <option value="No" data-en="No" data-hi="नहीं">No</option>
+                    <option value="Yes" data-en="Yes" data-hi="हाँ">Yes</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="disability_type_group" style="display: none;">
+                <label data-en="Disability Type" data-hi="विकलांगता का प्रकार">Disability Type</label>
+                <input type="text" name="disability_type" class="form-control" placeholder="e.g. Visual, Hearing, Orthopedic">
+            </div>
+
+            <h3 data-en="Documents (Optional)" data-hi="दस्तावेज़ (वैकल्पिक)">Documents (Optional)</h3>
+
+            <!-- AADHAAR UPLOAD WIDGET -->
+            <div class="upload-widget" id="widget-aadhaar">
+                <p class="upload-label"><span data-en="📄 Aadhaar Card" data-hi="📄 आधार कार्ड">📄 Aadhaar Card</span></p>
+                <div class="upload-options">
+                    <label class="upload-btn" for="doc-aadhaar-input" data-en="📁 Choose File" data-hi="📁 फ़ाइल चुनें">📁 Choose File</label>
+                    <input type="file" id="doc-aadhaar-input" name="documents" accept="image/*,.pdf" style="display:none">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" data-en="Find Schemes" data-hi="योजनाएँ खोजें">Find Schemes</button>
+        </form>
+    </div>
+    
+    <script>
+        function toggleDisabilityField() {
+            var subCategory = document.getElementById("sub_category").value;
+            var disabilityGroup = document.getElementById("disability_type_group");
+            if (subCategory === "Person with Disability") {
+                disabilityGroup.style.display = "block";
+            } else {
+                disabilityGroup.style.display = "none";
+            }
+        }
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

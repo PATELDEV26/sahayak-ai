@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmer Eligibility - SahayakAI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
     <nav class="navbar">
         <div class="logo"><a href="{{ url_for('index') }}"><span>Sahayak</span>AI</a></div>
+        <div class="nav-links">
+            <button id="lang-toggle" class="nav-btn">à¤¹à¤¿à¤¨à¥à¤¦à¥€</button>
+            <a href="{{ url_for('index') }}" class="nav-btn" data-en="Home" data-hi="à¤¹à¥‹à¤®">Home</a>
+        </div>
     </nav>
 
     <div class="form-container">
-        <h2>Farmer Eligibility Form</h2>
+        <h2 data-en="Farmer Eligibility Form" data-hi="à¤•à¤¿à¤¸à¤¾à¤¨ à¤ªà¤¾à¤¤à¥à¤°à¤¤à¤¾ à¤«à¥‰à¤°à¥à¤®">Farmer Eligibility Form</h2>
         <form action="{{ url_for('check_eligibility', category='farmer') }}" method="POST"
-            enctype="multipart/form-data">
+              enctype="multipart/form-data">
 
             <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" name="full_name" class="form-control" required>
+                <label data-en="Full Name" data-hi="à¤ªà¥‚à¤°à¤¾ à¤¨à¤¾à¤®">Full Name</label>
+                <input type="text" id="full_name" name="full_name" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label>Age</label>
-                <input type="number" name="age" class="form-control" required min="18">
+                <label data-en="Age" data-hi="à¤†à¤¯à¥">Age</label>
+                <input type="number" id="age" name="age" class="form-control" required min="18">
             </div>
 
             <div class="form-group">
-                <label>State</label>
-                <select name="state" class="form-control" required>
+                <label data-en="State" data-hi="à¤°à¤¾à¤œà¥à¤¯">State</label>
+                <select name="state" id="state" class="form-control" required>
                     <option value="" disabled selected>Select State</option>
                     <option value="All">All India</option>
                     <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
@@ -40,8 +42,7 @@
                     <option value="Bihar">Bihar</option>
                     <option value="Chandigarh">Chandigarh</option>
                     <option value="Chhattisgarh">Chhattisgarh</option>
-                    <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu
-                    </option>
+                    <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
                     <option value="Delhi">Delhi</option>
                     <option value="Goa">Goa</option>
                     <option value="Gujarat">Gujarat</option>
@@ -74,52 +75,118 @@
             </div>
 
             <div class="form-group">
-                <label>Land Owned (in acres)</label>
-                <input type="number" step="0.1" name="land_owned" class="form-control" required>
+                <label data-en="Land Owned (in acres)" data-hi="à¤¸à¥à¤µà¤¾à¤®à¤¿à¤¤à¥à¤µ à¤µà¤¾à¤²à¥€ à¤­à¥‚à¤®à¤¿ (à¤à¤•à¤¡à¤¼ à¤®à¥‡à¤‚)">Land Owned (in acres)</label>
+                <input type="number" id="land_owned" step="0.1" name="land_owned" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label>Land Type</label>
+                <label data-en="Land Type" data-hi="à¤­à¥‚à¤®à¤¿ à¤ªà¥à¤°à¤•à¤¾à¤°">Land Type</label>
                 <select name="land_type" class="form-control">
-                    <option value="Agricultural">Agricultural</option>
-                    <option value="Barren">Barren</option>
-                    <option value="Both">Both</option>
+                    <option value="Agricultural" data-en="Agricultural" data-hi="à¤•à¥ƒà¤·à¤¿">Agricultural</option>
+                    <option value="Barren" data-en="Barren" data-hi="à¤¬à¤‚à¤œà¤°">Barren</option>
+                    <option value="Both" data-en="Both" data-hi="à¤¦à¥‹à¤¨à¥‹à¤‚">Both</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>Annual Income (₹)</label>
-                <input type="number" name="income" class="form-control" required>
+                    <option value="Agricultural" data-en="Agricultural" data-hi="कृषि">Agricultural</option>
+                    <option value="Barren" data-en="Barren" data-hi="बंजर">Barren</option>
+                    <option value="Both" data-en="Both" data-hi="दोनों">Both</option>
+                </select>
             </div>
 
             <div class="form-group">
-                <label>Has Kisan Credit Card?</label>
+                <label data-en="Annual Income (₹)" data-hi="वार्षिक आय (₹)">Annual Income (₹)</label>
+                <input type="number" name="income" id="income" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label data-en="Has Kisan Credit Card?" data-hi="क्या आपके पास किसान क्रेडिट कार्ड है?">Has Kisan Credit Card?</label>
                 <select name="kks" class="form-control">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
+                    <option value="No" data-en="No" data-hi="नहीं">No</option>
+                    <option value="Yes" data-en="Yes" data-hi="हाँ">Yes</option>
                 </select>
             </div>
 
-            <h3>Documents</h3>
-            <div class="form-group file-input">
-                <label>Aadhaar Card (Required)</label>
-                <input type="file" name="documents" id="doc-aadhaar" required>
+            <h3 data-en="Documents — AI Auto-Fill" data-hi="दस्तावेज़ — AI ऑटो-फ़िल">Documents — AI Auto-Fill</h3>
+
+            <!-- AADHAAR UPLOAD WIDGET -->
+            <div class="upload-widget" id="widget-aadhaar">
+                <p class="upload-label"><span data-en="📄 Aadhaar Card" data-hi="📄 आधार कार्ड">📄 Aadhaar Card</span> <span style="color:#c62828;font-size:12px" data-en="(Required)" data-hi="(आवश्यक)">(Required)</span></p>
+                <p class="upload-hint" data-en="AI will auto-fill your name, age & state" data-hi="AI आपका नाम, आयु और राज्य स्वत: भर देगा">AI will auto-fill your name, age &amp; state</p>
+                <div class="upload-options">
+                    <label class="upload-btn" for="doc-aadhaar-input" data-en="📁 Choose File" data-hi="📁 फ़ाइल चुनें">📁 Choose File</label>
+                    <input type="file" id="doc-aadhaar-input" name="documents"
+                           accept="image/*,.pdf" style="display:none">
+                    <button type="button" class="upload-btn camera-btn open-camera-btn" data-en="📷 Take Photo" data-hi="📷 फोटो लें">📷 Take Photo</button>
+                </div>
+                <div class="camera-container" style="display:none">
+                    <video class="camera-feed" autoplay playsinline></video>
+                    <div class="camera-actions">
+                        <button type="button" class="upload-btn capture-btn" data-en="📸 Capture" data-hi="📸 खींचें">📸 Capture</button>
+                        <button type="button" class="upload-btn close-camera-btn"
+                                style="background:#9e9e9e" data-en="✕ Close" data-hi="✕ बंद करें">✕ Close</button>
+                    </div>
+                    <canvas class="capture-canvas" style="display:none"></canvas>
+                </div>
+                <img class="doc-preview-img" alt="Aadhaar preview" style="display:none;">
+                <p class="doc-preview-name"></p>
+                <div id="banner-aadhaar"></div>
             </div>
 
-            <div class="form-group file-input">
-                <label>Land Papers / 7/12 Extract (Required)</label>
-                <input type="file" name="documents" id="doc-land" required>
+            <!-- LAND DOCUMENT UPLOAD WIDGET -->
+            <div class="upload-widget" id="widget-land">
+                <p class="upload-label">🌾 Land Papers / 7-12 Extract <span style="color:#c62828;font-size:12px">(Required)</span></p>
+                <p class="upload-hint">AI will auto-fill your land area in acres</p>
+                <div class="upload-options">
+                    <label class="upload-btn" for="doc-land-input">📁 Choose File</label>
+                    <input type="file" id="doc-land-input" name="documents"
+                           accept="image/*,.pdf" style="display:none">
+                    <button type="button" class="upload-btn camera-btn open-camera-btn">📷 Take Photo</button>
+                </div>
+                <div class="camera-container" style="display:none">
+                    <video class="camera-feed" autoplay playsinline></video>
+                    <div class="camera-actions">
+                        <button type="button" class="upload-btn capture-btn">📸 Capture</button>
+                        <button type="button" class="upload-btn close-camera-btn"
+                                style="background:#9e9e9e">✕ Close</button>
+                    </div>
+                    <canvas class="capture-canvas" style="display:none"></canvas>
+                </div>
+                <img class="doc-preview-img" alt="Land document preview" style="display:none;">
+                <p class="doc-preview-name"></p>
+                <div id="banner-land"></div>
             </div>
 
-            <div class="form-group file-input">
-                <label>Bank Passbook (Optional)</label>
-                <input type="file" name="documents" id="doc-bank">
+            <!-- BANK PASSBOOK UPLOAD WIDGET -->
+            <div class="upload-widget" id="widget-bank">
+                <p class="upload-label">🏦 Bank Passbook <span style="color:#777;font-size:12px">(Optional)</span></p>
+                <p class="upload-hint">Upload front page of your passbook</p>
+                <div class="upload-options">
+                    <label class="upload-btn" for="doc-bank-input">📁 Choose File</label>
+                    <input type="file" id="doc-bank-input" name="documents"
+                           accept="image/*,.pdf" style="display:none">
+                    <button type="button" class="upload-btn camera-btn open-camera-btn">📷 Take Photo</button>
+                </div>
+                <div class="camera-container" style="display:none">
+                    <video class="camera-feed" autoplay playsinline></video>
+                    <div class="camera-actions">
+                        <button type="button" class="upload-btn capture-btn">📸 Capture</button>
+                        <button type="button" class="upload-btn close-camera-btn"
+                                style="background:#9e9e9e">✕ Close</button>
+                    </div>
+                    <canvas class="capture-canvas" style="display:none"></canvas>
+                </div>
+                    <canvas class="capture-canvas" style="display:none"></canvas>
+                </div>
+                <img class="doc-preview-img" alt="Bank passbook preview">
+                <p class="doc-preview-name"></p>
+                <div id="banner-bank"></div>
             </div>
 
-            <button type="submit" class="btn-primary">Find Schemes</button>
+            <button type="submit" class="btn-primary" data-en="Find Schemes" data-hi="योजनाएँ खोजें">Find Schemes</button>
         </form>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
-
 </html>
