@@ -31,7 +31,7 @@ def call_gemini_vision(image_bytes, prompt, expected_keys):
             raise ValueError("GEMINI_VISION_API_KEY is not set.")
         genai.configure(api_key=api_key)
         
-        model = genai.GenerativeModel('gemini-3.5-flash')
+        model = genai.GenerativeModel('gemini-1.5-flash')
         full_prompt = f"{prompt}\n\nReturn ONLY a valid JSON object with the following keys, and nothing else (do not include ```json wrappers). If a value is missing, return an empty string. Translate all names to English. Format dates as DD/MM/YYYY. Keys: " + ", ".join(expected_keys)
         
         response = model.generate_content([full_prompt, pil_img])
@@ -371,7 +371,7 @@ def chat():
         return jsonify({"reply": "API Key is missing."}), 500
     genai.configure(api_key=api_key)
     
-    model = genai.GenerativeModel('gemini-3.5-flash', system_instruction=SYSTEM_PROMPT)
+    model = genai.GenerativeModel('gemini-1.5-flash', system_instruction=SYSTEM_PROMPT)
     
     formatted_history = []
     for msg in history:
@@ -383,6 +383,7 @@ def chat():
         response = chat_session.send_message(message)
         return jsonify({"reply": response.text})
     except Exception as e:
+        print(f"Chat error: {e}")
         return jsonify({"reply": "क्षमा करें, अभी सेवा उपलब्ध नहीं है। कृपया थोड़ी देर बाद प्रयास करें।"}), 500
 
 
