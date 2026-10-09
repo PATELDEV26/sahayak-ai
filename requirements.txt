@@ -4,4 +4,4 @@ reportlab
 werkzeug
 python-dotenv
 Pillow
-google-generativeai
+groq

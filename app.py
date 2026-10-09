@@ -3,16 +3,22 @@ import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, session, send_file, jsonify
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
+from pathlib import Path
 
-load_dotenv()
+# Ensure workspace .env loads with override=True
+env_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path=env_path, override=True)
+load_dotenv(override=True)
+
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from datetime import datetime
 import io
 import re
 import json
+import base64
 from PIL import Image
-import google.generativeai as genai
+from groq import Groq
 
 INDIAN_STATES = [
     "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh",
@@ -23,37 +29,84 @@ INDIAN_STATES = [
     "Jammu and Kashmir","Ladakh","Puducherry"
 ]
 
+def get_groq_client():
+    api_key = os.environ.get('GROQ_API_KEY') or os.environ.get('GROK_API_KEY')
+    if not api_key:
+        raise ValueError("GROQ_API_KEY is not set. Please configure it in your environment variables or .env file.")
+    return Groq(api_key=api_key)
+
 def call_gemini_vision(image_bytes, prompt, expected_keys):
+    """
+    Extracts structured data from document images using Groq Vision AI (Qwen 3.8 27B Vision).
+    Maintains the 'call_gemini_vision' function name for complete backwards compatibility.
+    """
     try:
         pil_img = Image.open(io.BytesIO(image_bytes))
-        api_key = os.environ.get('GEMINI_VISION_API_KEY') or os.environ.get('GEMINI_API_KEY')
-        if not api_key:
-            raise ValueError("GEMINI_VISION_API_KEY is not set.")
-        genai.configure(api_key=api_key)
-        
-        model = genai.GenerativeModel('gemini-3.5-flash')
-        full_prompt = f"{prompt}\n\nReturn ONLY a valid JSON object with the following keys, and nothing else (do not include ```json wrappers). If a value is missing, return an empty string. Translate all names to English. Format dates as DD/MM/YYYY. Keys: " + ", ".join(expected_keys)
-        
-        response = model.generate_content([full_prompt, pil_img])
-        text = response.text.strip()
-        
+        if pil_img.mode in ("RGBA", "P"):
+            pil_img = pil_img.convert("RGB")
+
+        # Groq vision models require minimum 32x32 dimensions
+        w, h = pil_img.size
+        if w < 32 or h < 32:
+            pil_img = pil_img.resize((max(w, 64), max(h, 64)))
+
+        # Constrain dimensions for faster transmission while maintaining high clarity
+        if max(w, h) > 2048:
+            pil_img.thumbnail((2048, 2048), Image.Resampling.LANCZOS)
+
+        buf = io.BytesIO()
+        pil_img.save(buf, format="JPEG", quality=85)
+        img_b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+
+        client = get_groq_client()
+        full_prompt = (
+            f"{prompt}\n\n"
+            f"Return ONLY a valid JSON object with the following keys, and nothing else (do not include markdown code block formatting). "
+            f"If a value is missing, return an empty string. Translate all names to English. Format dates as DD/MM/YYYY. "
+            f"Keys: " + ", ".join(expected_keys)
+        )
+
+        response = client.chat.completions.create(
+            model="qwen/qwen3.8-27b",
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": full_prompt},
+                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{img_b64}"}}
+                    ]
+                }
+            ],
+            response_format={"type": "json_object"},
+            temperature=0.1
+        )
+
+        text = response.choices[0].message.content.strip()
         if text.startswith('```json'):
             text = text[7:]
         elif text.startswith('```'):
             text = text[3:]
         if text.endswith('```'):
             text = text[:-3]
-            
+
         data = json.loads(text.strip())
-        
+
         result = {}
         for key in expected_keys:
             result[key] = data.get(key, "")
-        
+
+        # Normalize state if match found in INDIAN_STATES
+        if "address_state" in result and result["address_state"]:
+            raw_state = str(result["address_state"]).strip()
+            for st in INDIAN_STATES:
+                if st.lower() in raw_state.lower():
+                    result["address_state"] = st
+                    break
+
         result["confidence"] = "high"
         return result
     except Exception as e:
-        print(f"Gemini OCR Error: {e}")
+        print(f"Vision OCR Error: {e}")
         res = {k: "" for k in expected_keys}
         res["confidence"] = "low"
         return res
@@ -359,26 +412,41 @@ STRICT RULES:
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    data = request.get_json()
+    data = request.get_json() or {}
     message = data.get('message', '')
     history = data.get('history', [])
-    
-    api_key = os.environ.get('GEMINI_API_KEY')
-    if not api_key:
-        return jsonify({"reply": "API Key is missing."}), 500
-    genai.configure(api_key=api_key)
-    
-    model = genai.GenerativeModel('gemini-3.5-flash', system_instruction=SYSTEM_PROMPT)
-    
-    formatted_history = []
-    for msg in history:
-        role = "user" if msg['role'] == "user" else "model"
-        formatted_history.append({"role": role, "parts": [msg['content']]})
-        
+
     try:
-        chat_session = model.start_chat(history=formatted_history)
-        response = chat_session.send_message(message)
-        return jsonify({"reply": response.text})
+        client = get_groq_client()
+        formatted_messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+
+        for msg in history:
+            role = "assistant" if msg.get('role') in ['model', 'assistant'] else "user"
+            content = msg.get('content', '')
+            if content:
+                formatted_messages.append({"role": role, "content": content})
+
+        if message:
+            formatted_messages.append({"role": "user", "content": message})
+
+        try:
+            response = client.chat.completions.create(
+                model="openai/gpt-oss-120b",
+                messages=formatted_messages,
+                temperature=0.4,
+                max_tokens=600
+            )
+        except Exception as model_err:
+            print(f"Primary chat model error, falling back to qwen: {model_err}")
+            response = client.chat.completions.create(
+                model="qwen/qwen3.8-27b",
+                messages=formatted_messages,
+                temperature=0.4,
+                max_tokens=600
+            )
+
+        reply = response.choices[0].message.content.strip()
+        return jsonify({"reply": reply})
     except Exception as e:
         print(f"Chat error: {e}")
         return jsonify({"reply": "क्षमा करें, अभी सेवा उपलब्ध नहीं है। कृपया थोड़ी देर बाद प्रयास करें।"}), 500
