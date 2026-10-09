@@ -43,16 +43,17 @@
             <div class="scheme-card" style="display: flex; flex-direction: column; justify-content: space-between;">
                 <div>
                     <h3>{{ scheme.scheme_name }}</h3>
-                    <p>{{ scheme.description }}</p>
+                    <p>{{ scheme.benefit_desc or scheme.description }}</p>
                     <div class="benefit-amount">{{ scheme.benefit_amount }}</div>
-                    {% if scheme.required_documents %}
+                    {% set docs = scheme.required_docs or scheme.required_documents %}
+                    {% if docs %}
                     <div style="font-size: 0.82rem; color: #444; margin: 12px 0; padding: 8px 10px; background: #f4f8f6; border-radius: 6px; border-left: 3px solid #0a9354;">
-                        <strong>📄 Documents Required:</strong> {{ scheme.required_documents.replace(';', ', ') }}
+                        <strong>📄 Documents Required:</strong> {{ docs.replace(';', ', ') }}
                     </div>
                     {% endif %}
                 </div>
                 <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
-                    <a href="{{ scheme.apply_link }}" target="_blank" rel="noopener noreferrer" class="btn-primary"
+                    <a href="{{ scheme.official_url or scheme.apply_link }}" target="_blank" rel="noopener noreferrer" class="btn-primary"
                         style="font-size: 0.92rem; padding: 0.55rem 1.1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-radius: 6px;">
                         Apply Now <span style="font-size: 1.15em;">↗</span>
                     </a>

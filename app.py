@@ -267,7 +267,13 @@ def evaluate_schemes_for_profile(df, profile):
         if min_land > 0 and land_owned < min_land:
             continue
 
-        matches.append(row.to_dict())
+        scheme_data = row.to_dict()
+        url = str(scheme_data.get('official_url', '')).strip()
+        scheme_data['official_url'] = url
+        scheme_data['apply_link'] = url
+        scheme_data['description'] = scheme_data.get('benefit_desc', '')
+        scheme_data['required_documents'] = scheme_data.get('required_docs', '')
+        matches.append(scheme_data)
 
     return matches
 

@@ -105,11 +105,10 @@ a {
 /* Hero Section */
 .hero {
     text-align: center;
-    padding: 6rem 1rem;
+    padding: 3.5rem 1rem 5rem;
     background: linear-gradient(135deg, #ecfdf5 0%, #fffbeb 100%);
     position: relative;
     overflow: hidden;
-    min-height: 50vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -129,63 +128,90 @@ a {
     100% { transform: rotate(360deg); }
 }
 
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .hero > * {
     position: relative;
     z-index: 1;
 }
 
 .hero h1 {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 800;
     letter-spacing: -1px;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
     background: linear-gradient(to right, #065f46, #059669);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: fadeInDown 0.8s ease-out;
+    animation: fadeInDown 0.6s ease-out;
 }
 
 .hero p {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     max-width: 650px;
-    margin: 0 auto 3rem;
+    margin: 0 auto 2.5rem;
     color: #475569;
     font-weight: 500;
-    animation: fadeInUp 0.8s ease-out 0.2s both;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
 }
 
-/* Cards Container */
+/* Cards Container - All 4 boxes strictly in 1 line on desktop */
 .categories {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.5rem;
-    max-width: 1200px;
-    margin: -4rem auto 4rem;
-    padding: 0 1.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    max-width: 1350px;
+    margin: -3.5rem auto 4rem;
+    padding: 0 1.25rem;
     position: relative;
     z-index: 10;
+    box-sizing: border-box;
+    align-items: stretch;
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border-radius: var(--border-radius);
-    padding: 2.5rem 2rem;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05), border 1px solid rgba(255,255,255,0.5);
+    padding: 2.25rem 1.25rem 1.75rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255,255,255,0.8);
     transition: var(--transition);
     text-align: center;
     border-top: 5px solid var(--accent-color);
-    opacity: 0;
-    animation: fadeInUp 0.8s forwards;
+    opacity: 1;
+    animation: fadeInUp 0.6s ease-out both;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    box-sizing: border-box;
 }
 
-.card:nth-child(1) { animation-delay: 0.3s; border-top-color: #3b82f6; }
-.card:nth-child(2) { animation-delay: 0.4s; border-top-color: #10b981; }
-.card:nth-child(3) { animation-delay: 0.5s; border-top-color: #8b5cf6; }
+.card:nth-child(1) { animation-delay: 0.1s; border-top-color: #3b82f6; }
+.card:nth-child(2) { animation-delay: 0.2s; border-top-color: #10b981; }
+.card:nth-child(3) { animation-delay: 0.3s; border-top-color: #8b5cf6; }
+.card:nth-child(4) { animation-delay: 0.4s; border-top-color: #f59e0b; }
 
 .card:hover {
     transform: translateY(-8px);
@@ -193,20 +219,31 @@ a {
 }
 
 .card-icon {
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
+    font-size: 3.5rem;
+    margin-bottom: 1.25rem;
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
 }
 
 .card h2 {
-    font-size: 1.75rem;
+    font-size: 1.45rem;
     color: var(--heading-color);
+    margin-bottom: 0.5rem;
 }
 
 .card p {
     color: #64748b;
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
     flex-grow: 1;
+}
+
+.card .btn-primary {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
 }
 
 .btn-primary {
@@ -481,8 +518,15 @@ select.form-control {
     gap: 10px;
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
+/* Responsive Breakpoints */
+@media (max-width: 900px) {
+    .categories {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 600px) {
     .hero {
         padding: 4rem 1rem 8rem;
     }
@@ -490,6 +534,7 @@ select.form-control {
         font-size: 2.25rem;
     }
     .categories {
+        grid-template-columns: 1fr;
         margin-top: -6rem;
     }
     .form-container {
@@ -503,3 +548,4 @@ select.form-control {
         font-size: 1.5rem;
     }
 }
+
